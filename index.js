@@ -1,8 +1,7 @@
-const util = require('util')
-const aws = require('aws-sdk')
+const aws = require('aws-sdk'),
+      log = require('./utils'),
       cloudfront = new aws.CloudFront()
-aws.config.setPromisesDependency();
-
+const dist = 'S3-haulo-admin-client-testing'
 const listDistributions = () => (
   new Promise((resolve, reject) => {
     cloudfront.listDistributions({}, (err, data) => {
@@ -12,7 +11,12 @@ const listDistributions = () => (
   })
 )
 listDistributions()
-  //.then(r => console.log(util.inspect(r, {showHidden: false, depth: null}))
-  .then(r => console.log(r))
-  .catch(e => console.log(e))
+  .then(r => {
+    const m = r.DistributionList.Items.map(e => e.Origins.Items)
+    console.log(m[0][0])
+    console.log(m[0][0].Id)
+    const x = m.map(e => e.map(i => i.Id))
+    log(x)
+  })
+  .catch(e => log(e))
 
