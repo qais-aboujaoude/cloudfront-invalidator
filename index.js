@@ -1,7 +1,8 @@
 const aws = require('aws-sdk'),
       log = require('./utils'),
       cloudfront = new aws.CloudFront()
-const dist = 'S3-haulo-admin-client-testing'
+const dist = 'haulo-driver-client-master'
+
 const listDistributions = () => (
   new Promise((resolve, reject) => {
     cloudfront.listDistributions({}, (err, data) => {
@@ -13,10 +14,13 @@ const listDistributions = () => (
 listDistributions()
   .then(r => {
     const m = r.DistributionList.Items.map(e => e.Origins.Items)
-    console.log(m[0][0])
-    console.log(m[0][0].Id)
-    const x = m.map(e => e.map(i => i.Id))
-    log(x)
+    const x = m.map(e => e.map(i => i.Id.substring(3)))
+    log(x[0])
+    const kousa = [].concat.apply([], x)
+    log(kousa)
+    console.log(kousa.includes(dist))
+    console.log(kousa.findIndex(i => i === dist))
+    console.log(r.DistributionList.Items[0].Id)
   })
   .catch(e => log(e))
 
