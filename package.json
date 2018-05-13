@@ -3,14 +3,12 @@
   "version": "1.0.0",
   "description": "A CLI tool that invalidates CloudFront distributions",
   "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
   "keywords": [
     "AWS",
     "Cloudfront",
     "S3",
-    "SPA"
+    "SPA",
+    "CLI"
   ],
   "bin": {
     "cloudfront-invalidator": "./index.js"
