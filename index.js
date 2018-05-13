@@ -33,5 +33,4 @@ arg
       })
     })
     .catch(e => console.log(e))
-  : console.log('no argument provided')
-
+  : (() => { throw new Error('No CloudFront Distribution provided') })()
