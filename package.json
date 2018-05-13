@@ -12,6 +12,9 @@
     "S3",
     "SPA"
   ],
+  "bin": {
+    "cloudfront-invalidator": "./index.js"
+  },
   "author": "qais aboujaoude <q.i.aboujaoude@gmail.com>",
   "license": "ISC",
   "dependencies": {
