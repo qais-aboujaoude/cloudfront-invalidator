@@ -14,10 +14,12 @@ const listDistributions = () => (
 arg
   ? listDistributions()
     .then(r => {
-      const distributionItems = r.DistributionList.Items.map(e => e.Origins.Items)
+      const distributionItems = r.DistributionList
+        .Items.map(e => e.Origins.Items)
       const listOfOrigins = [].concat.apply([],
         distributionItems.map(e => e.map(i => i.Id.substring(3))))
-      const distributionId = r.DistributionList.Items[listOfOrigins.findIndex(i => i === arg)].Id
+      const distributionId = r.DistributionList
+        .Items[listOfOrigins.findIndex(i => i === arg)].Id
       cloudfront.createInvalidation({
         DistributionId: distributionId,
         InvalidationBatch: {
