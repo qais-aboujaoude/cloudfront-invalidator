@@ -9,14 +9,12 @@ const listDistributions = () => (
   })
 )
 
-const params =  JSON.parse(event["CodePipeline.job"].data.actionConfiguration
-  .configuration.UserParameters)
 listDistributions()
   .then(r => {
     const distributionItems = r.DistributionList.Items.map(e => e.Origins.Items)
     const listOfOrigins = [].concat.apply([],
       distributionItems.map(e => e.map(i => i.Id.substring(3))))
-    const distributionId = r.DistributionList.Items[listOfOrigins.findIndex(i => i === params.S3Bucket)].Id
+    const distributionId = r.DistributionList.Items[listOfOrigins.findIndex(i => i === PARAM)].Id
     cloudfront.createInvalidation({
       DistributionId: distributionId,
       InvalidationBatch: {
@@ -27,9 +25,9 @@ listDistributions()
         }
       }
     }, (err, data) => {
-      err ? putJob.failure(event["CodePipeline.job"].id, context.invokeid, err)
-        : putJob.success(event["CodePipeline.job"].id,'Success: invalidated')
+      err ? console.log(err)
+          : console.log(data)
     })
   })
-  .catch(e => putJob.failure(event["CodePipeline.job"].id, context.invokeid, e))
+  .catch(e => console.log(e))
 
