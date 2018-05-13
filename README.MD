@@ -27,6 +27,12 @@ export AWS_REGION=us-west-2
 
 Examples: 
 
+~~~bash
+cloudfront-invalidator [s3 bucket name]
+~~~
+
+
+
 ## Built With
 
 * [aws-sdk](https://aws.amazon.com/sdk-for-node-js/) - SDK for managing AWS resources

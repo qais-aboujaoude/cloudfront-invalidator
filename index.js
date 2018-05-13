@@ -1,7 +1,7 @@
 const aws = require('aws-sdk'),
-  cloudfront = new aws.CloudFront()
+      cloudfront = new aws.CloudFront()
 
-const arg  = process.argv.slice(2)[0];
+const arg  = process.argv.slice(2)[0]
 
 const listDistributions = () => (
   new Promise((resolve, reject) => {
