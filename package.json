@@ -1,14 +1,16 @@
 {
-  "name": "lambda-invalidator",
+  "name": "cloudfront-invalidator",
   "version": "1.0.0",
-  "description": "A Lambda function that invalidates CloudFront distributions",
+  "description": "A CLI tool that invalidates CloudFront distributions",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
     "AWS",
-    "Lambda"
+    "Cloudfront",
+    "S3",
+    "SPA"
   ],
   "author": "qais aboujaoude <q.i.aboujaoude@gmail.com>",
   "license": "ISC",
