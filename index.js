@@ -1,8 +1,6 @@
 const aws = require('aws-sdk'),
-      log = require('./utils'),
+      putJob = require('./putJob'),
       cloudfront = new aws.CloudFront()
-
-const dist = 'haulo-driver-client-master'
 
 const listDistributions = () => (
   new Promise((resolve, reject) => {
@@ -12,34 +10,29 @@ const listDistributions = () => (
   })
 )
 
-listDistributions()
-  .then(r => {
-    const distributionItems = r.DistributionList.Items.map(e => e.Origins.Items)
-    //const listOfOrigins = distributionItems.map(e => e.map(i => i.Id.substring(3)))
-    //const kousa = [].concat.apply([], listOfOrigins)
-    const listOfOrigins = [].concat.apply(
-      [], distributionItems.map(e => e.map(i => i.Id.substring(3)))
-    )
-    //console.log(kousa.findIndex(i => i === dist))
-    const distributionId = r.DistributionList.Items[listOfOrigins.findIndex(i => i === dist)].Id
-    log(distributionId)
-
-    cloudfront.createInvalidation({
-      DistributionId: distributionId,
-      InvalidationBatch: { 
-        CallerReference: Date.now().toString(), 
-        Paths: { 
-          Quantity: 1, 
-          Items: [
-            '/*',
-          ]
+exports.handler = (event, context) => {
+  const params =  JSON.parse(event["CodePipeline.job"].data.actionConfiguration
+                  .configuration.UserParameters)
+  listDistributions()
+    .then(r => {
+      const distributionItems = r.DistributionList.Items.map(e => e.Origins.Items)
+      const listOfOrigins = [].concat.apply([],
+        distributionItems.map(e => e.map(i => i.Id.substring(3))))
+      const distributionId = r.DistributionList.Items[listOfOrigins.findIndex(i => i === params.S3Bucket)].Id
+      cloudfront.createInvalidation({
+        DistributionId: distributionId,
+        InvalidationBatch: {
+          CallerReference: Date.now().toString(),
+          Paths: {
+            Quantity: 1,
+            Items: ['/*']
+          }
         }
-      }
-    }, (err, data) => {
-      err ? console.log(err, err.stack)
-          : console.log(data)
+      }, (err, data) => {
+        err ? putJob.failure(event["CodePipeline.job"].id, context.invokeid, err)
+            : putJob.success(event["CodePipeline.job"].id,'Success: invalidated')
+      })
     })
-
-  })
-  .catch(e => log(e))
+    .catch(e => putJob.failure(event["CodePipeline.job"].id, context.invokeid, e))
+}
 
