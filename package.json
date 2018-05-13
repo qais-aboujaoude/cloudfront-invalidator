@@ -16,7 +16,7 @@
     "cloudfront-invalidator": "./index.js"
   },
   "author": "qais aboujaoude <q.i.aboujaoude@gmail.com>",
-  "license": "ISC",
+  "license": "MPL-2.0",
   "dependencies": {
     "aws-sdk": "^2.232.1"
   }
