@@ -17,6 +17,7 @@
   "author": "qais aboujaoude <q.i.aboujaoude@gmail.com>",
   "license": "MPL-2.0",
   "dependencies": {
-    "aws-sdk": "^2.232.1"
+    "aws-sdk": "^2.232.1",
+    "commander": "^2.15.1"
   }
 }
