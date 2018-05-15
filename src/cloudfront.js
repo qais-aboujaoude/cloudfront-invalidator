@@ -1,3 +1,5 @@
+process.env.AWS_SDK_LOAD_CONFIG = true
+
 const aws        = require('aws-sdk'),
       cloudfront = new aws.CloudFront()
 
