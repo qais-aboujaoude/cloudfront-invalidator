@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 const aws = require('aws-sdk'),
       cloudfront = new aws.CloudFront()
 
