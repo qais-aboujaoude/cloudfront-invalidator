@@ -1,6 +1,6 @@
 # EB-environment-manager
 
-A command line tool that invalidates the cahce of a web hosting CloudFront distribution 
+A command line tool that invalidates the cahce of a web hosting CloudFront distribution by giving a S3 Bucket name. 
 ### Installing
 
 install globally via npm:
@@ -28,19 +28,18 @@ export AWS_REGION=us-west-2
 Examples: 
 
 ~~~bash
-cloudfront-invalidator [s3 bucket name]
+cloudfront-invalidator -b [s3 bucket name]
 ~~~
 
-
-
-## Built With
+### Built With
 
 * [aws-sdk](https://aws.amazon.com/sdk-for-node-js/) - SDK for managing AWS resources
+* [Commander](https://github.com/tj/commander.js/) - Tooling to create CLI tools with node.js
 
-## Authors
+### Authors
 
 * **Qais Aboujaoude** 
 
-## License
+### License
 
 This project is licensed under the Mozilla Public License MPL  License - see the [LICENSE.md](LICENSE.md) file for details
