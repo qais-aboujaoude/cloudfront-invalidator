@@ -1,6 +1,12 @@
 #!/usr/bin/env node
-const cloudfront = require('./src/cloudfront')
+const program    = require('commander')
+      cloudfront = require('./src/cloudfront')
 
-const distributionItems = list => list.DistributionList.Items.map(e => e.Origins.Items)
+program
+  .version('1.0.0')
+  .option('-b, --bucket [bucket]', 'Name of S3 Bucket to invalidate')
+  .parse(process.argv)
 
-// cloudfront.invalidateBucket('haulo-admin-client-testing')
+program.bucket 
+  ? cloudfront.invalidateBucket(program.bucket)
+  :  (() => { throw new Error('No S3 Bucket provided') })()
