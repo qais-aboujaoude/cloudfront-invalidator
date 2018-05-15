@@ -9,30 +9,31 @@ const listDistributions = () => (
   })
 )
 
-const distributionItems = list => list.DistributionList.Items.map(e => e.Origins.Items)
+const getDistributionId = (list, bucket) => (
+  list.DistributionList.Items[[].concat.apply([],
+    list.DistributionList.Items
+      .map(e => e.Origins.Items)
+      .map(e => e.map(i => i.Id.substring(3)))).findIndex(i => i === bucket)].Id
+)
 
-listDistributions()
-  .then(r => {
-    const distributionItems = r.DistributionList
-      .Items.map(e => e.Origins.Items)
-    const listOfOrigins = [].concat.apply([],
-      distributionItems.map(e => e.map(i => i.Id.substring(3))))
-    const distributionId = r.DistributionList
-      .Items[listOfOrigins.findIndex(i => i === arg)].Id
-    cloudfront.createInvalidation({
-      DistributionId: distributionId,
-      InvalidationBatch: {
-        CallerReference: Date.now().toString(),
-        Paths: {
-          Quantity: 1,
-          Items: ['/*']
+const invalidateBucket = bucket => {
+  listDistributions()
+    .then(r => {
+      cloudfront.createInvalidation({
+        DistributionId: getDistributionId(r, bucket),
+        InvalidationBatch: {
+          CallerReference: Date.now().toString(),
+          Paths: {
+            Quantity: 1,
+            Items: ['/*']
+          }
         }
-      }
-    }, (err, data) => {
-      err ? console.log(err)
-          : console.log(data)
+      }, (err, data) => {
+        err ? console.log(err)
+            : console.log(data)
+      })
     })
-  })
-  .catch(e => console.log(e))
+    .catch(e => console.log(e))
+}
 
-module.exports.listDistributions = listDistributions
+module.exports.invalidateBucket = invalidateBucket
