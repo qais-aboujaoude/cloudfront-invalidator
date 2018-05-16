@@ -18,25 +18,22 @@ const getDistributionId = (list, bucket) => (
       .map(e => e.map(i => i.Id.substring(3)))).findIndex(i => i === bucket)].Id
 )
 
-const invalidateBucket = bucket => {
-  return new Promise((resolve, reject) => {
+const invalidateBucket = bucket => (
+  new Promise((resolve, reject) => {
     listDistributions()
-    .then(r => {
-      cloudfront.createInvalidation({
-        DistributionId: getDistributionId(r, bucket),
-        InvalidationBatch: {
-          CallerReference: Date.now().toString(),
-          Paths: {
-            Quantity: 1,
-            Items: ['/*']
+      .then(r => {
+        cloudfront.createInvalidation({
+          DistributionId: getDistributionId(r, bucket),
+          InvalidationBatch: {
+            CallerReference: Date.now().toString(),
+            Paths: {
+              Quantity: 1,
+              Items: ['/*']
+            }
           }
-        }
-      }, (err, data) => {
-        err ? reject(err)
-            : resolve(data)
+        }, (err, data) => err ? reject(err) : resolve(data))
       })
-    })
   })
-}
+)
 
 module.exports.invalidateBucket = invalidateBucket
