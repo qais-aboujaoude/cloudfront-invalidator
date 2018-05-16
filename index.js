@@ -7,6 +7,10 @@ program
   .option('-b, --bucket [bucket]', 'Name of S3 Bucket to invalidate')
   .parse(process.argv)
 
-program.bucket 
-  ? cloudfront.invalidateBucket(program.bucket)
-  :  (() => { throw new Error('No S3 Bucket provided') })()
+program.bucket
+  ? (() => {
+    const buckets = process.argv.splice(3)
+    buckets.forEach(async e => await cloudfront.invalidateBucket((e)))
+  })()
+  : (() => { throw new Error('No S3 Bucket provided') })()
+
