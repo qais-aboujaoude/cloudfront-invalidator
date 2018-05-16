@@ -19,7 +19,8 @@ const getDistributionId = (list, bucket) => (
 )
 
 const invalidateBucket = bucket => {
-  listDistributions()
+  return new Promise((resolve, reject) => {
+    listDistributions()
     .then(r => {
       cloudfront.createInvalidation({
         DistributionId: getDistributionId(r, bucket),
@@ -31,11 +32,11 @@ const invalidateBucket = bucket => {
           }
         }
       }, (err, data) => {
-        err ? console.log(err)
-            : console.log(data)
+        err ? reject(err)
+            : resolve(data)
       })
     })
-    .catch(e => console.log(e))
+  })
 }
 
 module.exports.invalidateBucket = invalidateBucket
