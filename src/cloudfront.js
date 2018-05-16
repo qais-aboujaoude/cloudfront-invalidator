@@ -5,9 +5,8 @@ const aws        = require('aws-sdk'),
 
 const listDistributions = () => (
   new Promise((resolve, reject) => {
-    cloudfront.listDistributions({}, (err, data) => {
-      err ? reject(err) : resolve(data)
-    })
+    cloudfront.listDistributions({}, (err, data) => 
+      err ? reject(err) : resolve(data))
   })
 )
 
