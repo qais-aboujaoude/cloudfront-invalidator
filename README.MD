@@ -1,4 +1,4 @@
-# EB-environment-manager
+# CloudFront-Invalidator 
 
 A command line tool that invalidates the cahce of a web hosting CloudFront distribution by giving a S3 Bucket name. 
 ### Installing
