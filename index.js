@@ -10,7 +10,7 @@ program
 program.bucket.length
   ? (() => {
     const buckets = process.argv.splice(3)
-    buckets.forEach(async e => await cloudfront.invalidateBucket((e)))
+      buckets.forEach(async e => await cloudfront.invalidateBucket((e)))
     })()
   : (() => { throw new Error('No S3 Bucket(s) provided') })()
 
